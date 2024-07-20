@@ -9,8 +9,9 @@ class CreateGPSDataTable extends Migration
     {
         Schema::create('gps_data', function (Blueprint $table) {
             $table->id();
-            $table->float('latitude', 10, 6);
-            $table->float('longitude', 10, 6);
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
+            $table->decimal('speed', 5, 2);
             $table->string('status');
             $table->timestamp('timestamp');
             $table->timestamps();

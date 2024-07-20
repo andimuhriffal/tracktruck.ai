@@ -9,4 +9,12 @@ class GPSData extends Model
     use HasFactory;
 
     protected $table = 'gps_data';
+
+    protected $fillable = [
+        'latitude',
+        'longitude',
+        'speed',
+        'status',
+        'timestamp',
+    ];
 }

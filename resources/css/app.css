@@ -1,5 +1,5 @@
 
-.fuel-level-bar {
+.speed-gauge {
     width: 100%;
     background-color: #007bff; /* Warna fuel level */
     transition: height 0.5s ease; /* Animasi transisi */

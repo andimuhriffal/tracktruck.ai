@@ -14,6 +14,7 @@ class GPSDataController extends Controller
         $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
+            'speed' => 'required|numeric',
             'status' => 'required|string',
         ]);
 
@@ -21,6 +22,7 @@ class GPSDataController extends Controller
             $data = new GPSData();
             $data->latitude = $request->latitude;
             $data->longitude = $request->longitude;
+            $data->speed = $request->speed;
             $data->status = $request->status;
             $data->timestamp = now();
             $data->save();
