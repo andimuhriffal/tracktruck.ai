@@ -28,7 +28,7 @@ public function login(Request $request)
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
         // Authentication passed...
-        return redirect()->intended('detections'); // Redirect to authenticated page (dashboard)
+        return redirect()->intended('dashboard'); // Redirect to authenticated page (dashboard)
     }
 
     // Authentication failed...

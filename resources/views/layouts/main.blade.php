@@ -19,7 +19,7 @@
         body {
             position: relative;
             background: linear-gradient(to right, rgba(255, 0, 0, 0.5), rgba(0, 0, 255, 0.5)), 
-                        url('{{ asset('images/background.jpg') }}') no-repeat center center fixed;
+                        url('{{ asset('') }}') no-repeat center center fixed;
             background-size: contain; /* Ensure the entire image is visible */
             color: white;
             display: flex;

@@ -40,58 +40,21 @@
             padding: 20px;
         }
 
-        .row1 {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-
-        .map-section,
-        .camera-section,
-        .speedometer-section {
-            flex: 1;
-            margin: 10px;
-        }
-
-        .map-section,
-        .camera-section {
-            max-width: 45%;
-        }
-
-        .speedometer-section {
-            max-width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            padding: 10px;
-        }
-
-        .map-section h3,
-        .camera-section h3,
-        .speedometer-section h3 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
         #map-container {
-            width: 100%;
-            padding: 10px;
             border: 5px solid #3FA2F6;
             border-radius: 10px;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         #map {
-            height: 400px;
+            height: 450px;
             width: 100%;
             border-radius: 5px;
         }
 
         .camera-section img {
-            width: 100%;
+            width: 70%;
             height: auto;
             object-fit: cover;
             border: 5px solid #3FA2F6;
@@ -99,23 +62,19 @@
         }
 
         .speedometer-container {
-            position: relative;
             text-align: center;
         }
 
         .speedometer-container h3 {
-            position: relative;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
             font-size: 24px;
-            padding: 10px;
+            margin: 10px 0;
         }
 
         .speedometer-section #speedometer-1 {
             width: 100%;
             max-width: 400px;
             height: auto;
+            padding: 5px;
         }
 
         footer {
@@ -146,7 +105,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">Informasi Truck</a>
+        <a class="navbar-brand" href="#">TrackTruck.Ai</a>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <span class="welcome-message" style="color: #ffffff">Welcome, {{ Auth::user()->name }}!</span>
@@ -161,20 +120,20 @@
     </nav>
 
     <div class="dashboard-container">
-        <div class="row1">
-            <div class="map-section">
+        <div class="row">
+            <div class="col-md-6 map-section">
                 <h3>Lokasi Truck</h3>
                 <div id="map-container">
                     <div id="map"></div>
                 </div>
             </div>
 
-            <div class="camera-section">
+            <div class="col-md-6 camera-section">
                 <h3>Camera Dashboard Mobil</h3>
-                <img src="http://127.0.0.1:5000/video_feed" alt="Camera Feed" id="cameraFeed1">
+		<img src="http://192.168.137.211:5000/video_feed" alt="Camera Feed" id="cameraFeed1">
             </div>
 
-            <div class="speedometer-section">
+            <div class="col-md-1.7 speedometer-section">
                 <div class="speedometer-container">
                     <h3>Kecepatan Truck</h3>
                     <div id="speedometer-1"></div>
@@ -182,25 +141,25 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        <button onclick="goBack()">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back</span>
-        </button>
-    </footer>
-
     <script>
         var map = L.map('map').setView([-0.981094, 100.392701], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        // Define custom icon
+        var customIcon = L.icon({
+            iconUrl: '{{ asset('images/truck.png') }}', // Path to your PNG icon
+            iconSize: [35, 40], // size of the icon
+            iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+            popupAnchor: [1, -34] // point from which the popup should open relative to the iconAnchor
+        });
+
         function updateMarker(latitude, longitude) {
             if (window.marker) {
                 map.removeLayer(window.marker);
             }
-            window.marker = L.marker([latitude, longitude]).addTo(map)
+            window.marker = L.marker([latitude, longitude], { icon: customIcon }).addTo(map)
                 .bindPopup('Lokasi GPS')
                 .openPopup();
         }
@@ -209,7 +168,7 @@
             if (window.marker) {
                 map.removeLayer(window.marker);
             }
-            window.marker = L.marker([-0.981094, 100.392701]).addTo(map)
+            window.marker = L.marker([-0.981094, 100.392701], { icon: customIcon }).addTo(map)
                 .bindPopup('Mencari koordinat Truck...')
                 .openPopup();
         }
@@ -232,11 +191,11 @@
 
         var speedoMeter1 = new speedometer({
             divFact: 10,
-            initVal: 0, // Set initial speed value to 0
-            edgeRadius: 170,
-            indicatorRadius: 100,
-            indicatorNumbRadius: 130,
-            speedoNobeW: 100,
+            initVal: 0,
+            edgeRadius: 120,
+            indicatorRadius: 105,
+            indicatorNumbRadius: 75,
+            speedoNobeW: 60,
             id: 'mani-1'
         });
 
@@ -244,7 +203,7 @@
         document.getElementById('speedometer-1').append(speedoMeter1.elm);
 
         function updateSpeedometer(speed) {
-            speedoMeter1.setPosition(speed); // Adjust this based on how your speedometer's API works
+            speedoMeter1.setPosition(speed);
         }
 
         setInterval(fetchData, 5000);
